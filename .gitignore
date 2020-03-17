@@ -2,5 +2,5 @@
 .DS_Store
 
 #All folders in here
-metallica
-queen
+/metallica/*
+/queen/*
