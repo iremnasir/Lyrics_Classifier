@@ -1,7 +1,8 @@
 TUE
 
- - Make the whole code work
- - Do the pytest tutorial from the course webpage
+ - Make the whole code work - CHECK
+ - Do the pytest tutorial from the course webpage # in progress
  - Write some tests
+ - Decouple git branch from gradient garlic to my own repo - CHECK
 
  WED

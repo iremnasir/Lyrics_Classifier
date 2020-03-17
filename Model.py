@@ -59,17 +59,17 @@ def GS_Model(vectorized_df_Xtrain, y_train, param_range):
     'Optimum grid search parameter is', grid_m.best_params_)
     return grid_m.best_params_['alpha']
 
-def take_input():
+def take_input(model_class_vect, model_fit, label_encoder):
     inp =input('Tell me a line from a song, I\'ll predict the artist!')
     new_song = [f'{inp}']
-    new_song_test = tv.transform(new_song)
-    new_song_df = pd.DataFrame(new_song_test.todense(), columns=tv.get_feature_names())
-    y_pred_test_song = m.predict(new_song_df)
+    new_song_test = model_class_vect.transform(new_song)
+    new_song_df = pd.DataFrame(new_song_test.todense(), columns=model_class_vect.get_feature_names())
+    y_pred_test_song = model_fit.predict(new_song_df)
 
-    probabilities = (m.predict_proba(new_song_df)[0])
+    probabilities = (model_fit.predict_proba(new_song_df)[0])
     if np.max(probabilities) >= 0.5:
-        pred_artist = le.inverse_transform(y_pred_test_song)[0]
+        pred_artist = label_encoder.inverse_transform(y_pred_test_song)[0]
         print('This song is predicted to belong to', pred_artist)
     else:
-        class_dict = dict(zip(le.classes_, probabilities))
+        class_dict = dict(zip(label_encoder.classes_, probabilities))
         print('Results are inconclusive, the probabilies are: ', class_dict)

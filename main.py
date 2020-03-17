@@ -19,7 +19,7 @@ if __name__ == '__main__':
     st_name = create_artist_directory(namelist)
     for name in st_name:
         if os.path.isfile(f'{name}.csv'):
-            print ("CSV File exists")
+            print (f"CSV File {name} exists")
         else:
             print (f"{name}.csv file does not exist, fetching songs")
             song_parsing([name])
@@ -37,4 +37,4 @@ if __name__ == '__main__':
 
 #----------------------Take input-----------------------------------#
 
-    take_input()
+    take_input(tv, m, le)
