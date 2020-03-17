@@ -21,13 +21,13 @@ def create_artist_directory(namelist):
     st_name = []
     for name in namelist:
         artist_name = str(name).lower()
-        artist_name_re = re.sub('_','-',artist_name)
+        artist_name_re = re.sub('_', '-', artist_name)
         st_name.append(artist_name_re)
         if not os.path.exists(artist_name_re):
             os.mkdir(artist_name_re)
-            print("Directory " , artist_name_re ,  " Created ")
+            print("Directory", artist_name_re, " created ")
         else:
-            print("Directory " , artist_name_re ,  " already exists")
+            print("Directory", artist_name_re, " already exists")
     return st_name
 
 #Build a pattern for HTTP fetch

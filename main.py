@@ -1,12 +1,13 @@
-from Data_Scraping_func import *
-from Songs2DF_func import dataframe_artists, merge_dataframes
-from Model import *
 import spacy
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-import pandas as pd
-import numpy as np
 from sklearn import preprocessing
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+from Data_Scraping_func import *
+from Songs2DF_func import *
+from Model import *
+from sklearn.naive_bayes import MultinomialNB
+
 
 spacy_model = spacy.load('en_core_web_md')
 le = preprocessing.LabelEncoder()

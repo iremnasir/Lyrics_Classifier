@@ -1,15 +1,8 @@
 import pandas as pd
 import numpy as np
 import spacy
-import re
-
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
-from imblearn.under_sampling import RandomUnderSampler, NearMiss
-from imblearn.over_sampling import RandomOverSampler, SMOTE
-from imblearn.over_sampling import SMOTE
-from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sys import argv
 import warnings
