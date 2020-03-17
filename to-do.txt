@@ -1,0 +1,7 @@
+TUE
+
+ - Make the whole code work
+ - Do the pytest tutorial from the course webpage
+ - Write some tests
+
+ WED

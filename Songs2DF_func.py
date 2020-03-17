@@ -2,6 +2,7 @@ import pandas as pd
 import os
 
 
+
 def dataframe_artists(namelist, loc):
     """ Creates a dataframe per artist, cleans the text and saves as .csv """
     for artist_name_re in namelist:
@@ -41,8 +42,4 @@ def merge_dataframes(namelist):
         df_1.rename(columns={f'{name}':'Lyrics'}, inplace=True)
         df = pd.concat([df, df_1], axis = 0, ignore_index = True)
     df_lyrics = df.dropna(axis = 0)
-    key = list(range(0,len(namelist)))
-    map_dict = dict(zip(namelist, key))
-    df_lyrics['ydata'] = df_lyrics['Artist'].map(map_dict)
-    print('There are ', len(df_lyrics), f'songs in merged dataframe after dropping string cleaning')
     return df_lyrics
