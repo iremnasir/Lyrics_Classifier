@@ -1,6 +1,6 @@
 from Data_Scraping_func import *
 from Songs2DF_func import dataframe_artists, merge_dataframes
-from Model import lemm, TFIDF_fit_transform, GS_Model
+from Model import *
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -8,34 +8,11 @@ import pandas as pd
 import numpy as np
 from sklearn import preprocessing
 
-
-model = spacy.load('en_core_web_md')
+spacy_model = spacy.load('en_core_web_md')
+le = preprocessing.LabelEncoder()
 tv = TfidfVectorizer()
 
-if __name__ == '__main__':
-    loc = os.getcwd()
-    os.chdir(loc)
-
-    st_name = create_artist_directory(namelist)
-    #song_parsing(st_name)
-    dataframe_artists(st_name, loc) # creates individual dfs from each csv
-    datafr = merge_dataframes(st_name) # merges the df
-
-
-#------------------ TRAININIG - MAKE IT OPTIONAL -------------------#
-    #Define train-test
-    le = preprocessing.LabelEncoder()
-    datafr['ydata'] = le.fit_transform(datafr['Artist'])
-    datafr['Token'] = datafr['Lyrics'].apply(lemm, model=model)
-    tv_vector = TFIDF_fit_transform(datafr['Token'], tv)
-    y_train = datafr['ydata']
-    alpha_gs = GS_Model(tv_vector, y_train, MultinomialNB, [0.0001, 0.001, 0.1 ,1])
-
-    m = MultinomialNB(alpha = alpha_gs)
-    m.fit(tv_vector, y_train)
-
-#----------------------Take input-----------------------------------#
-
+def take_input():
     inp =input('Tell me a line from a song, I\'ll predict the artist!')
     new_song = [f'{inp}']
     new_song_test = tv.transform(new_song)
@@ -49,9 +26,29 @@ if __name__ == '__main__':
     else:
         class_dict = dict(zip(le.classes_, probabilities))
         print('Results are inconclusive, the probabilies are: ', class_dict)
-    #result_artist = m.predict_proba(max(new_song_df)[0])
-    #print(result_artist)
-    #if (m.predict_proba(new_song_df)).any >= 0.55:
-    #    print('This song is written by:', y_pred_test_song)
-    #else:
-    #    print('I cannot conclude this with my training data')
+
+if __name__ == '__main__':
+    loc = os.getcwd()
+    os.chdir(loc)
+    st_name = create_artist_directory(namelist)
+    for name in st_name:
+        if os.path.isfile(f'{name}.csv'):
+            print ("CSV File exists")
+        else:
+            print ("File does not exist")
+            song_parsing(name)
+    dataframe_artists(st_name, loc) # creates individual dfs from each csv
+    datafr = merge_dataframes(st_name) # merges the df
+    X_train, y_train = preprocess_data(datafr, spacy_model, le)
+    tv_vector = TFIDF_fit_transform(X_train, tv)
+    alpha_gs = GS_Model(tv_vector, y_train, [0.0001, 0.001, 0.1 ,1])
+
+
+#------------------ MODEL TRAININIG -------------------#
+
+    m = MultinomialNB(alpha = alpha_gs)
+    m.fit(tv_vector, y_train)
+
+#----------------------Take input-----------------------------------#
+
+    take_input()

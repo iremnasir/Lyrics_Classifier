@@ -15,7 +15,6 @@ from sys import argv
 import warnings
 warnings.filterwarnings('ignore')
 
-
 def train_test(datafr, size_test):
     """ OPTIONAL Performs train/test split on the data """
     X_train, X_test, y_train, y_test = train_test_split(datafr[['Song_name','Lyrics', 'Artist']]
@@ -32,13 +31,24 @@ def lemm(x, model):
             clean.append(token.lemma_)
     return " ".join(clean)
 
+def preprocess_data(datafr, x_tokenize_model, y_process_model):
+    """Preprocesses training and target set """
+    datafr['ydata'] = y_process_model.fit_transform(datafr['Artist'])
+    datafr['Token'] = datafr['Lyrics'].apply(lemm, model=x_tokenize_model)
+    X_train = datafr['Token']
+    y_train = datafr['ydata']
+    return X_train, y_train
+
+
 def TFIDF_fit_transform(datafr, model_class):
+    """ This is only done on X_train after tokenization"""
     vector = model_class.fit_transform(datafr)
     tv_train = pd.DataFrame(vector.todense()
     , columns = model_class.get_feature_names()) # dense because we save zeros
     return tv_train
 
-def GS_Model(vectorized_df_Xtrain, y_train, gs_model, param_range):
+
+def GS_Model(vectorized_df_Xtrain, y_train, param_range):
     gs_model = MultinomialNB()
     gs_model_param = {'alpha': param_range}
     grid_m= GridSearchCV(gs_model,gs_model_param,cv=5)
@@ -47,4 +57,4 @@ def GS_Model(vectorized_df_Xtrain, y_train, gs_model, param_range):
     best_score = (grid_m.best_score_)
     print('Best score as a result of Grid Search is:',best_score, '\n',
     'Optimum grid search parameter is', grid_m.best_params_)
-    return grid_m.best_score_
+    return grid_m.best_params_['alpha']
