@@ -58,3 +58,18 @@ def GS_Model(vectorized_df_Xtrain, y_train, param_range):
     print('Best score as a result of Grid Search is:',best_score, '\n',
     'Optimum grid search parameter is', grid_m.best_params_)
     return grid_m.best_params_['alpha']
+
+def take_input():
+    inp =input('Tell me a line from a song, I\'ll predict the artist!')
+    new_song = [f'{inp}']
+    new_song_test = tv.transform(new_song)
+    new_song_df = pd.DataFrame(new_song_test.todense(), columns=tv.get_feature_names())
+    y_pred_test_song = m.predict(new_song_df)
+
+    probabilities = (m.predict_proba(new_song_df)[0])
+    if np.max(probabilities) >= 0.5:
+        pred_artist = le.inverse_transform(y_pred_test_song)[0]
+        print('This song is predicted to belong to', pred_artist)
+    else:
+        class_dict = dict(zip(le.classes_, probabilities))
+        print('Results are inconclusive, the probabilies are: ', class_dict)

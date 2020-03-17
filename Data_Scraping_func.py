@@ -45,7 +45,7 @@ def song_parsing(st_name):
     for link in links:
         song_links = requests.get(link)
         if song_links.status_code == 200:
-            print('Fetching the songs')
+            print('Access granted')
         else:
             print('Access denied')
         parsed = BeautifulSoup(song_links.text, 'html.parser')
