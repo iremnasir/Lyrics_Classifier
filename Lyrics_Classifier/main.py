@@ -3,9 +3,9 @@ from sklearn import preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
-from Data_Scraping_func import *
-from Songs2DF_func import *
-from Model import *
+from Lyrics_Classifier.Data_Scraping_func import *
+from Lyrics_Classifier.Songs2DF_func import *
+from Lyrics_Classifier.Model import *
 from sklearn.naive_bayes import MultinomialNB
 
 

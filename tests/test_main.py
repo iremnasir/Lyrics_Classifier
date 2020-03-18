@@ -1,6 +1,6 @@
 import pytest
-from Data_Scraping_func import create_artist_directory, song_parsing
-from Songs2DF_func import dataframe_artists
+from Lyrics_Classifier.Data_Scraping_func import create_artist_directory, song_parsing
+from Lyrics_Classifier.Songs2DF_func import dataframe_artists
 import os
 
 #------Data Scraping Tests ----------#
