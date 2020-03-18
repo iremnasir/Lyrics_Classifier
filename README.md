@@ -1,6 +1,7 @@
-=================
-Lyrics_Classifier
-=================
+
+#Lyrics_Classifier#
+
+[![Build Status](https://travis-ci.com/iremnasir/Lyrics_Classifier.svg?branch=master)](https://travis-ci.com/iremnasir/Lyrics_Classifier)
 
 **WELCOME TO LYRICS CLASSIFIER!**
 
