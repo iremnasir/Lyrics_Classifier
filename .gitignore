@@ -8,3 +8,7 @@
 /pink/*
 /u2/*
 /travis/*
+/__pycache__/
+
+#CSV files
+/*.csv
