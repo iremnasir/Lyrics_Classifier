@@ -8,7 +8,10 @@
 
 -The user is encouraged to enter as many artists as possible in following format to run the program:
 
-`python main.py queen <artist1> <artist2name-artist2lastname>`
+`python main.py <artist1> <artist2name-artist2lastname>`
+
+`python main.py Queen Red-Hot-Chili-Peppers Pearl-Jam`
+
 
 -The program checks whether a .csv file already exists for the artist in the beginning, if true, it skips the song parsing option.
 
