@@ -1,4 +1,6 @@
-# Lyrics_Classifier
+=================
+Lyrics_Classifier
+=================
 
 **WELCOME TO LYRICS CLASSIFIER!**
 
@@ -21,4 +23,22 @@
 
 -The collective dataframe is tokenized and the elements are used as training set.
 
--At the end, the user is asked for lyrics input to be predicted based on the model trained. 
+-At the end, the user is asked for lyrics input to be predicted based on the model trained.
+
+* Free software: MIT license
+* Documentation: https://Lyrics-Classifier.readthedocs.io.
+
+
+Features
+--------
+
+* TODO
+
+Credits
+-------
+
+This package was created with Cookiecutter_ and the
+`Spiced Academy Cookiecutter PyPackage <https://github.com/spicedacademy/spiced-cookiecutter-pypackage>`_ project template.
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
