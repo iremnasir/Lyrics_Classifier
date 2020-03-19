@@ -13,6 +13,7 @@ from sklearn import preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
+model = spacy.load('en_core_web_md')
 
 
 
@@ -107,7 +108,6 @@ def lemm(x, model):
             clean.append(token.lemma_)
     return " ".join(clean)
 
-spacy_model = spacy.load('en_core_web_md')
 le = preprocessing.LabelEncoder()
 tv = TfidfVectorizer()
 alpha_gs = 0.1
