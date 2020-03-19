@@ -37,6 +37,6 @@ def test_dataframe_conversion():
     assert len(str_unf) == 0
     assert os.path.isfile('./pink.csv') == True
     num_row = 0
-    for row in open("./eric-clapton.csv"):
+    for row in open("./pink.csv"):
         num_row+=1
     assert num_row > 1
