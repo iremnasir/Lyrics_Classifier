@@ -30,7 +30,7 @@ def test_dataframe_conversion():
     """ Tests if the songs are written into the dataframe,
     if omitted clauses still exists or not,
     if .csv is created """
-    namelist = ['eric-clapton']
+    namelist = ['pink']
     loc = os.getcwd()
     df_ = dataframe_artists(namelist, loc)
     str_unf =  df_[df_['eric-clapton'].str.contains("Unfortunately, we are not authorized to show these lyrics")]
