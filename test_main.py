@@ -33,7 +33,7 @@ def test_dataframe_conversion():
     namelist = ['pink']
     loc = os.getcwd()
     df_ = dataframe_artists(namelist, loc)
-    str_unf =  df_[df_['eric-clapton'].str.contains("Unfortunately, we are not authorized to show these lyrics")]
+    str_unf =  df_[df_['pink'].str.contains("Unfortunately, we are not authorized to show these lyrics")]
     assert len(str_unf) == 0
     assert os.path.isfile('./pink.csv') == True
     num_row = 0
