@@ -10,6 +10,7 @@ warnings.filterwarnings('ignore')
 
 
 BASE_URL = 'https://www.metrolyrics.com/'
+#Take command line interface argument from the user
 
 
 def create_artist_directory(namelist):
