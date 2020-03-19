@@ -26,8 +26,8 @@ def dataframe_artists(namelist, loc):
             df_ = df_[~df_[f'{artist_name_re}'].str.contains("Instrumental")]
             #df_[f'{artist_name_re}'] = df_[f'{artist_name_re}'].replace(r'[^\w\d]',' ', regex=True)
             df_ = df_.replace(r'\\n', ' ', regex=True)
-
             df_.to_csv(f'{artist_name_re}.csv')
+            return df_
         print('There are ', len(df_), f'songs in {artist_name_re} dataframe')
 
 def merge_dataframes(namelist):
