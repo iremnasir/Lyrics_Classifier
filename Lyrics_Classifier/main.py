@@ -12,4 +12,5 @@ from sklearn.naive_bayes import MultinomialNB
 namelist = argv[1:]
 
 if __name__ == '__main__':
-    predict_artist_from_lyrics(namelist, take_input = False)
+    take_input predict_artist_from_lyrics(namelist, take_input = True)
+    run_model(tv, m, le, 0.5, take_input)
