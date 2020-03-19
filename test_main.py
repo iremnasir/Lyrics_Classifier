@@ -116,5 +116,5 @@ m = MultinomialNB(alpha = alpha_gs)
 
 def test_preprocessing():
     df_all = merge_dataframes(['eric-clapton', 'pink'])
-    X_train, y_train = preprocess_data(df_all, spacy_model, le)
+    X_train, y_train = preprocess_data(df_all, model, le)
     assert X_train.shape[0] > 10
