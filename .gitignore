@@ -11,13 +11,14 @@
 /travis/*
 /slipknot/*
 /britney-spears/*
-/eric-clapton/*
 /__pycache__/*
 /.pytest_cache/*
 /Lyrics_Classifier/__pycache__/*
 
 #CSV files
 /*.csv
+#Except Eric Clapton as test data
+!/eric-clapton.csv
 
 #To_DO
 /to-do.txt
