@@ -8,15 +8,17 @@ from sys import argv
 import warnings
 warnings.filterwarnings('ignore')
 
-namelist = argv[1:]
-# Build this in somehow
-#if len(namelist)<3:
-#    print('You need to pass in at least two artists')
-#else:
-###
+
+BASE_URL = 'https://www.metrolyrics.com/'
+
+
 def create_artist_directory(namelist):
-    """ Converts the user input artist name to dash form /
-    Creates artist folders in current path """
+
+    """
+    Converts the user input artist name to dash form /
+    Creates artist folders in current path
+
+    """
 
     st_name = []
     for name in namelist:
@@ -30,19 +32,25 @@ def create_artist_directory(namelist):
             print("Directory", artist_name_re, " already exists")
     return st_name
 
-#Build a pattern for HTTP fetch
-def song_parsing(st_name):
-    """ Collects the number of pages for individual artist's lyrics /
-    Fetching each link for each song /
-    Writing songs into .txt files """
-
-    links = []
+def create_artist_url(st_name):
+    """
+    Takes a list of names
+    Generates base url pattern for each name
+    Returns artist urls
+    """
+    artist_link = []
     for artist_st in st_name:
         artist_name_ht = artist_st + '-lyrics.html'
-        wbpg = 'https://www.metrolyrics.com/'+artist_name_ht
-        links.append(wbpg)
-    http_range = [] # List of HTTPs for different artist pages
-    for link in links:
+        wbpg = BASE_URL+artist_name_ht
+        artist_link.append(wbpg)
+    return artist_link
+
+def collect_artist_song_pages(artist_link):
+    """
+    Parses the collection of urls for each artist_st
+    """
+    http_links = []
+    for link in artist_link:
         song_links = requests.get(link)
         if song_links.status_code == 200:
             print('Access granted')
@@ -51,16 +59,30 @@ def song_parsing(st_name):
         parsed = BeautifulSoup(song_links.text, 'html.parser')
         for i in range(
         len(parsed.find_all(attrs={'class': 'pages'})[0].find_all('a'))):
-            http_range.append(parsed.find_all(attrs={'class': 'pages'})[0]
+            http_links.append(parsed.find_all(attrs={'class': 'pages'})[0]
             .find_all('a')[i].get('href'))
+    return http_links
+
+def collect_song_urls(http_links):
+    """Parse each song url"""
     song_http = []
-    for address in http_range:
+    for address in http_links:
         songs_pg = requests.get(address)
         pg = BeautifulSoup(songs_pg.text, 'html.parser')
         titles = pg.find_all(
         attrs = {'class': 'page-content tabs-wrapper clearfix'})[0].find_all(attrs = {'class':'title'})
         for i in range(len(titles)):
             song_http.append(titles[i].get('href'))
+    return song_http
+
+def song_parsing(song_http):
+    """
+    Collect artist name again from the url
+    Parse the songs
+    Omit the songs with non-pattern matching urls
+    Write .txt files
+    """
+
     for link in song_http:
         artistpre = link.split('.html')[0].split('lyrics')[-1]
         artist_name = artistpre[1:]

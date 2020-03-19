@@ -1,8 +1,10 @@
 import pandas as pd
 import os
 
-def dataframe_artists(namelist, loc):
-    """ Creates a dataframe per artist, cleans the text and saves as .csv """
+def text_dataframe_csv(namelist, loc):
+    """
+    Creates a dataframe per artist, cleans the text and saves as .csv
+    """
     for artist_name_re in namelist:
         df_ = []
         sn = []
@@ -27,8 +29,10 @@ def dataframe_artists(namelist, loc):
             #df_[f'{artist_name_re}'] = df_[f'{artist_name_re}'].replace(r'[^\w\d]',' ', regex=True)
             df_ = df_.replace(r'\\n', ' ', regex=True)
             df_.to_csv(f'{artist_name_re}.csv')
-            return df_
+        print(f'{artist_name_re}.csv is saved!')
         print('There are ', len(df_), f'songs in {artist_name_re} dataframe')
+    return df_
+
 
 def merge_dataframes(namelist):
     """ Merges individual artist dataframes, drops na and removes junk """

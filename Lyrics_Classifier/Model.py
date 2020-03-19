@@ -17,6 +17,8 @@ def train_test(datafr, size_test):
     return X_train, y_train
 
 def lemm(x, model):
+    """ Lemmatize each word in a sentence"""
+
     clean = []
     tokens = model(x)
     for token in tokens:
@@ -42,6 +44,7 @@ def TFIDF_fit_transform(datafr, model_class):
 
 
 def GS_Model(vectorized_df_Xtrain, y_train, param_range):
+    """Perform grid search"""
     gs_model = MultinomialNB()
     gs_model_param = {'alpha': param_range}
     grid_m= GridSearchCV(gs_model,gs_model_param,cv=5)
@@ -52,7 +55,11 @@ def GS_Model(vectorized_df_Xtrain, y_train, param_range):
     'Optimum grid search parameter is', grid_m.best_params_)
     return grid_m.best_params_['alpha']
 
-def take_input(model_class_vect, model_fit, label_encoder):
+def take_input(model_class_vect, model_fit, label_encoder, prob_threshold):
+    """
+    Take user input lyrics, perform prediction based on fit model
+    print the artist depending on the threshold of probability set by user
+    """
     inp =input('Tell me a line from a song, I\'ll predict the artist!')
     new_song = [f'{inp}']
     new_song_test = model_class_vect.transform(new_song)
@@ -60,7 +67,7 @@ def take_input(model_class_vect, model_fit, label_encoder):
     y_pred_test_song = model_fit.predict(new_song_df)
 
     probabilities = (model_fit.predict_proba(new_song_df)[0])
-    if np.max(probabilities) >= 0.5:
+    if np.max(probabilities) >= prob_threshold:
         pred_artist = label_encoder.inverse_transform(y_pred_test_song)[0]
         print('This song is predicted to belong to', pred_artist)
     else:
