@@ -9,8 +9,12 @@
 /pink/*
 /u2/*
 /travis/*
+/slipknot/*
+/britney-spears/*
 /eric-clapton/*
-/__pycache__/
+/__pycache__/*
+/.pytest_cache/*
+/Lyrics_Classifier/__pycache__/*
 
 #CSV files
 /*.csv
