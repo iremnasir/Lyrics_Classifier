@@ -10,10 +10,10 @@ from sklearn import preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 import warnings
 import os
-from Lyrics_Classifier.Data_Scraping_func import (
+from Data_Scraping_func import (
 create_artist_directory, create_artist_url, collect_artist_song_pages,
 collect_song_urls, song_parsing )
-from Lyrics_Classifier.Songs2DF_func import (
+from Songs2DF_func import (
 text_dataframe_csv, merge_dataframes
 )
 warnings.filterwarnings('ignore')

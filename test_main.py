@@ -13,7 +13,6 @@ from sklearn import preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
-model = spacy.load('en_core_web_md')
 
 
 
@@ -108,6 +107,7 @@ def lemm(x, model):
             clean.append(token.lemma_)
     return " ".join(clean)
 
+spacy_model = spacy.load('en_core_web_md')
 le = preprocessing.LabelEncoder()
 tv = TfidfVectorizer()
 alpha_gs = 0.1
@@ -116,5 +116,5 @@ m = MultinomialNB(alpha = alpha_gs)
 
 def test_preprocessing():
     df_all = merge_dataframes(['eric-clapton', 'pink'])
-    X_train, y_train = preprocess_data(df_all, model, le)
+    X_train, y_train = preprocess_data(df_all, spacy_model, le)
     assert X_train.shape[0] > 10
