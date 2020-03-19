@@ -18,7 +18,9 @@
 #CSV files
 /*.csv
 #Except Eric Clapton as test data
+#Except pink to demonstrate merge_df works
 !/eric-clapton.csv
+!/pink.csv
 
 #To_DO
 /to-do.txt
