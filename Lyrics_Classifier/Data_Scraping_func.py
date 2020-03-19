@@ -100,3 +100,4 @@ def song_parsing(song_http):
                 json.dump(lyrics_text, f)
         except Exception:
                 print('Defective link name, cannot fetch the song')
+    return artist_name, song_name
