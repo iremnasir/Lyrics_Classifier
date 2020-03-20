@@ -7,7 +7,7 @@ install:
   - pip install codecov
 # command to run tests
 script:
-- pytest -s --cov=Lyrics_Classifier test_main.py
+- pytest
 
 after_success:
     - codecov
