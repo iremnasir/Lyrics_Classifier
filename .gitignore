@@ -2,7 +2,9 @@
 .DS_Store
 
 #All folders in here
-/.eggs
+/.eggs/*
+/Lyrics_Classifier.egg-info/*
+/__pycache__/*
 /metallica/*
 /queen/*
 /rihanna/*
