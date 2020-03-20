@@ -5,10 +5,10 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install codecov
-  - python -m spacy download en_core_web_en
   - pip install -e .
 # command to run tests
 script:
+- python -m spacy download en_core_web_en
 - pytest --cov=./
 
 after_success:
