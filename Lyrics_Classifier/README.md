@@ -4,6 +4,10 @@ Lyrics_Classifier
 
 ## **WELCOME TO LYRICS CLASSIFIER!** ##
 
+[![codecov](https://codecov.io/gh/iremnasir/Lyrics_Classifier/branch/master/graph/badge.svg)](https://codecov.io/gh/iremnasir/Lyrics_Classifier)
+
+[![Build Status](https://travis-ci.com/iremnasir/Lyrics_Classifier.svg?branch=master)](https://travis-ci.com/iremnasir/Lyrics_Classifier)
+
 - This program takes artist input from the user to train a Multinomial Naive Bayes model via parsing artists' songs from the website www.metrolyrics.com
 
 ***Usage***
