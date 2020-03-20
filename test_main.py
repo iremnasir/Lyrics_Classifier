@@ -7,7 +7,7 @@ from Lyrics_Classifier.Songs2DF_func import text_dataframe_csv, merge_dataframes
 import os
 import shutil
 import spacy
-from Lyrics_Classifier.Model import lemm, preprocess_data
+from Lyrics_Classifier.Model import lemm, preprocess_data, train_test
 from sklearn import preprocessing
 
 
@@ -87,14 +87,19 @@ def test_text_dataframe_csv():
     assert num_row > 1
 
 #Test Merge dataframes
-    def test_merge_df():
-        df_all = merge_dataframes(['eric-clapton', 'pink'])
-        assert len(df_all.groupby('Artist').count()) == 2
+def test_merge_df():
+    df_all = merge_dataframes(['eric-clapton', 'pink'])
+    assert len(df_all.groupby('Artist').count()) == 2
 
-# --------- ANYTHING BELOW THIS BREAKS SPACY -----------------
+#Test train-test train_test_split
+def test_tts():
+    df_all = merge_dataframes(['eric-clapton', 'pink'])
+    X_train, y_train = train_test(df_all, 0.2)
+    assert len(X_train) == round(0.8 * len(df_all))
 
 spacy_model = spacy.load('en_core_web_md')
 le = preprocessing.LabelEncoder()
+
 #Test preprocessing
 def test_preprocessing():
     df_all = merge_dataframes(['eric-clapton', 'pink'])

@@ -10,8 +10,8 @@ warnings.filterwarnings('ignore')
 
 def train_test(datafr, size_test):
     """ OPTIONAL Performs train/test split on the data """
-    X_train, X_test, y_train, y_test = train_test_split(datafr[['Song_name','Lyrics', 'Artist']]
-    , datafr['ydata'],test_size=size_test, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+    datafr['Lyrics'], datafr['Artist'],test_size=size_test, random_state=42)
     test = pd.concat([X_test, y_test], axis = 1)
     test.to_csv('Song_Test.csv')
     return X_train, y_train
