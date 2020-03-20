@@ -93,10 +93,10 @@ def test_text_dataframe_csv():
 
 # --------- ANYTHING BELOW THIS BREAKS SPACY -----------------
 
-# spacy_model = spacy.load('en_core_web_md')
-# le = preprocessing.LabelEncoder()
-# #Test preprocessing
-# def test_preprocessing():
-#     df_all = merge_dataframes(['eric-clapton', 'pink'])
-#     X_train, y_train = preprocess_data(df_all, spacy_model, le)
-#     assert X_train.shape[0] > 10
+spacy_model = spacy.load('en_core_web_md')
+le = preprocessing.LabelEncoder()
+#Test preprocessing
+def test_preprocessing():
+    df_all = merge_dataframes(['eric-clapton', 'pink'])
+    X_train, y_train = preprocess_data(df_all, spacy_model, le)
+    assert X_train.shape[0] > 10

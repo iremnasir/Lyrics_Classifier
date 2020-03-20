@@ -1,20 +1,17 @@
 import os
 from sys import argv
-import spacy
+
 from sklearn import preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-from Data_Scraping_func import (
-create_artist_directory, create_artist_url, collect_artist_song_pages,
-collect_song_urls, song_parsing )
-from Songs2DF_func import (
-text_dataframe_csv, merge_dataframes
-)
-from Model import (
-lemm, preprocess_data, TFIDF_fit_transform, GS_Model, take_input
-)
-
 from sklearn.naive_bayes import MultinomialNB
+
+import spacy
+from Lyrics_Classifier.Data_Scraping_func import (collect_artist_song_pages, collect_song_urls,
+                                create_artist_directory, create_artist_url,
+                                song_parsing)
+from Lyrics_Classifier.Model import (GS_Model, TFIDF_fit_transform, lemm, preprocess_data,
+                   take_input)
+from Lyrics_Classifier.Songs2DF_func import merge_dataframes, text_dataframe_csv
 
 #Take command line interface argument from the user
 namelist = argv[1:]
