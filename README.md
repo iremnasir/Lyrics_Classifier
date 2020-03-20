@@ -1,15 +1,15 @@
-## **WELCOME TO LYRICS CLASSIFIER!** ##
+# **WELCOME TO LYRICS CLASSIFIER!** #
 [![codecov](https://codecov.io/gh/iremnasir/Lyrics_Classifier/branch/master/graph/badge.svg)](https://codecov.io/gh/iremnasir/Lyrics_Classifier) [![Build Status](https://travis-ci.com/iremnasir/Lyrics_Classifier.svg?branch=master)](https://travis-ci.com/iremnasir/Lyrics_Classifier)
 
 - This program takes artist input from the user to train a Multinomial Naive Bayes model via parsing artists' songs from the website www.metrolyrics.com
 
-***Usage***
+## Usage
 
 - The user is encouraged to enter as many artists as possible in following format to run the program:
 
-* `python ./Lyrics_Classifier/main.py <artist1> <artist2name-artist2lastname>`
+    `python ./Lyrics_Classifier/main.py <artist1> <artist2name-artist2lastname>`
 
-* `python ./Lyrics_Classifier/main.py Queen Red-Hot-Chili-Peppers Pearl-Jam`
+    `python ./Lyrics_Classifier/main.py Queen Red-Hot-Chili-Peppers Pearl-Jam`
 
 
 - The program checks whether a .csv file already exists for the artist in the beginning, if true, it skips the song parsing option.
