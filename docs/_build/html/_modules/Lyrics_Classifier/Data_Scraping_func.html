@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lyrics_Classifier.Data_Scraping_func &mdash; Lyrics_Classifier 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Lyrics_Classifier
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Lyrics_Classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Lyrics_Classifier</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>Lyrics_Classifier.Data_Scraping_func</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Lyrics_Classifier.Data_Scraping_func</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">argv</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.metrolyrics.com/&#39;</span>
+
+
+<div class="viewcode-block" id="create_artist_directory"><a class="viewcode-back" href="../../Lyrics_Classifier.html#Lyrics_Classifier.Data_Scraping_func.create_artist_directory">[docs]</a><span class="k">def</span> <span class="nf">create_artist_directory</span><span class="p">(</span><span class="n">namelist</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the user input artist name to dash form /</span>
+<span class="sd">    Creates artist folders in current path</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">st_name</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+        <span class="n">artist_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">artist_name_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">artist_name</span><span class="p">)</span>
+        <span class="n">st_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">artist_name_re</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">artist_name_re</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">artist_name_re</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directory&quot;</span><span class="p">,</span> <span class="n">artist_name_re</span><span class="p">,</span> <span class="s2">&quot; created &quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directory&quot;</span><span class="p">,</span> <span class="n">artist_name_re</span><span class="p">,</span> <span class="s2">&quot; already exists&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">st_name</span></div>
+
+<div class="viewcode-block" id="create_artist_url"><a class="viewcode-back" href="../../Lyrics_Classifier.html#Lyrics_Classifier.Data_Scraping_func.create_artist_url">[docs]</a><span class="k">def</span> <span class="nf">create_artist_url</span><span class="p">(</span><span class="n">st_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes a list of names</span>
+<span class="sd">    Generates base url pattern for each name</span>
+<span class="sd">    Returns artist urls</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">artist_link</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">artist_st</span> <span class="ow">in</span> <span class="n">st_name</span><span class="p">:</span>
+        <span class="n">artist_name_ht</span> <span class="o">=</span> <span class="n">artist_st</span> <span class="o">+</span> <span class="s1">&#39;-lyrics.html&#39;</span>
+        <span class="n">wbpg</span> <span class="o">=</span> <span class="n">BASE_URL</span><span class="o">+</span><span class="n">artist_name_ht</span>
+        <span class="n">artist_link</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wbpg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">artist_link</span></div>
+
+<div class="viewcode-block" id="collect_artist_song_pages"><a class="viewcode-back" href="../../Lyrics_Classifier.html#Lyrics_Classifier.Data_Scraping_func.collect_artist_song_pages">[docs]</a><span class="k">def</span> <span class="nf">collect_artist_song_pages</span><span class="p">(</span><span class="n">artist_link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the collection of urls for each artist_st</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">http_links</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">artist_link</span><span class="p">:</span>
+        <span class="n">song_links</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">song_links</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Access granted&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Access denied&#39;</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">song_links</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;pages&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))):</span>
+            <span class="n">http_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;pages&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">http_links</span></div>
+
+<div class="viewcode-block" id="collect_song_urls"><a class="viewcode-back" href="../../Lyrics_Classifier.html#Lyrics_Classifier.Data_Scraping_func.collect_song_urls">[docs]</a><span class="k">def</span> <span class="nf">collect_song_urls</span><span class="p">(</span><span class="n">http_links</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse each song url&quot;&quot;&quot;</span>
+    <span class="n">song_http</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">address</span> <span class="ow">in</span> <span class="n">http_links</span><span class="p">:</span>
+        <span class="n">songs_pg</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="n">pg</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">songs_pg</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;page-content tabs-wrapper clearfix&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span><span class="s1">&#39;title&#39;</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">titles</span><span class="p">)):</span>
+            <span class="n">song_http</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">song_http</span></div>
+
+<div class="viewcode-block" id="song_parsing"><a class="viewcode-back" href="../../Lyrics_Classifier.html#Lyrics_Classifier.Data_Scraping_func.song_parsing">[docs]</a><span class="k">def</span> <span class="nf">song_parsing</span><span class="p">(</span><span class="n">song_http</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collect artist name again from the url</span>
+<span class="sd">    Parse the songs</span>
+<span class="sd">    Omit the songs with non-pattern matching urls</span>
+<span class="sd">    Write .txt files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">song_http</span><span class="p">:</span>
+        <span class="n">artistpre</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.html&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;lyrics&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">artist_name</span> <span class="o">=</span> <span class="n">artistpre</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">song_name</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.htm&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ind_song</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">ind_song</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+        <span class="n">lyrics</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="s1">&#39;lyrics-body-text&#39;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">verse</span> <span class="o">=</span> <span class="n">lyrics</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span> <span class="p">:</span> <span class="s1">&#39;verse&#39;</span><span class="p">})</span>
+        <span class="n">lyrics_text</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">verse</span><span class="p">)):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">verse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">lyrics_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;./</span><span class="si">{artist_name}</span><span class="s1">/</span><span class="si">{song_name}</span><span class="s1">.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">lyrics_text</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Defective link name, cannot fetch the song&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">artist_name</span><span class="p">,</span> <span class="n">song_name</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Irem Nasir
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
