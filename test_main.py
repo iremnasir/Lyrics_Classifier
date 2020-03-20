@@ -6,6 +6,10 @@ collect_song_urls, song_parsing
 from Lyrics_Classifier.Songs2DF_func import text_dataframe_csv, merge_dataframes
 import os
 import shutil
+import spacy
+from Lyrics_Classifier.Model import lemm, preprocess_data
+from sklearn import preprocessing
+
 
 #------Data Scraping Tests ----------#
 
@@ -86,3 +90,11 @@ def test_text_dataframe_csv():
     def test_merge_df():
         df_all = merge_dataframes(['eric-clapton', 'pink'])
         assert len(df_all.groupby('Artist').count()) == 2
+
+spacy_model = spacy.load('en_core_web_md')
+le = preprocessing.LabelEncoder()
+#Test preprocessing
+def test_preprocessing():
+    df_all = merge_dataframes(['eric-clapton', 'pink'])
+    X_train, y_train = preprocess_data(df_all, spacy_model, le)
+    assert X_train.shape[0] > 10
